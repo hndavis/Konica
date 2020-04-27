@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameServer
+namespace GameServer.com
 {
-	class BoardItem
+	public interface IGameSocketServer
 	{
+		void Start();
+		void Stop();
 	}
 }
