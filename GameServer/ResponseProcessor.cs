@@ -2,6 +2,7 @@
 using GameServer.Game;
 using log4net;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,24 +16,19 @@ namespace GameServer
 		// this class handle the possible different encoding of the message
 
 		private static readonly ILog log = LogManager.GetLogger(typeof(ResponseProcessor));
-		//public IGameEngine GameEngine { get; set; }
+		public IGameEngine GameEngine { get; set; }
 		public string GetResponse( string incommingMsgRaw)
 		{
-			//if ( GameEngine  == null)
-			//{
-			//	string Err = "Must set GameEngine";
-			//	log.Error(Err);
-			//	throw new Exception(Err);
-			//}
-			Payload inMsg = JsonConvert.DeserializeObject<Payload>(incommingMsgRaw);
 
-			Payload outMessage = new Payload();
-
-
-
-
-
-			return JsonConvert.SerializeObject(outMessage);
+			log.Debug($"raw incomming msg {incommingMsgRaw}");
+						
+			dynamic d = JObject.Parse(incommingMsgRaw);  //efficient enough for the small msgs
+			Payload inMsg = new Payload(d);
+			log.Debug($"inMsg {inMsg}");
+			Payload outMsg = GameEngine.ProcessMsgRequest(inMsg);
+			log.Debug($"outMsg {outMsg}");
+			var  outJsonString = JsonConvert.SerializeObject(d);
+			return outJsonString;
 		}
 
 	}

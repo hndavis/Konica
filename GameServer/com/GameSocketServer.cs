@@ -12,33 +12,44 @@ using WebSocketSharp.Server;
 using log4net;  //todo put in readme
 using Newtonsoft.Json;
 using GameServer.com;
+using Autofac.Core;
+using Autofac;
+using GameServer.Game;
 
 namespace GameServer.com
 {
-	public class KonicaGameBehavior : WebSocketBehavior
+	internal class KonicaGameBehavior : WebSocketBehavior
 	{
+		
 		private static readonly ILog log = LogManager.GetLogger(typeof(KonicaGameBehavior));
 		public IResponseProcessor responseProcessor { get; set; }
+
+		public KonicaGameBehavior()
+		{
+			responseProcessor = GameSocketServer.Container.Resolve<IResponseProcessor>();
+			responseProcessor.GameEngine = GameSocketServer.Container.Resolve<IGameEngine>();
+			responseProcessor.GameEngine.Board = GameSocketServer.Container.Resolve<IBoard>();
+		}
 		protected override void OnMessage(MessageEventArgs e)
 		{
-	
-			if (responseProcessor == null)
-			{
-				responseProcessor = new ResponseProcessor();
-			}
+
+			log.Debug($"Received Msg {e.Data}");
 			Send( responseProcessor.GetResponse(e.Data));
+			log.Debug("Response Message Sent");
 			
 		}
 	}
 	public class GameSocketServer : IGameSocketServer
 	{
 		WebSocketServer gameSocketServer;
+		public static IContainer Container { get; private set; }
 		private static readonly ILog log = LogManager.GetLogger(typeof(GameSocketServer));
 		const int KonicaGamePort = 8081;
 		int Port;
 
-		public GameSocketServer(int port= KonicaGamePort)
+		public GameSocketServer(IContainer container,  int port= KonicaGamePort)
 		{
+			Container = container;
 			Port = port;
 		}
 
@@ -47,11 +58,9 @@ namespace GameServer.com
 			log.Info($"Opening WinSocket Server on port {Port}");
 			
 			gameSocketServer = new WebSocketServer( Port);
-			gameSocketServer.AddWebSocketService<KonicaGameBehavior>("/");
+			gameSocketServer.AddWebSocketService<KonicaGameBehavior>("/"); 
 			gameSocketServer.Start();
-			//Console.ReadKey(true);
-			//gameSocketServer.Stop();
-
+	
 
 		}
 

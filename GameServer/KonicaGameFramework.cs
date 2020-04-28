@@ -20,22 +20,21 @@ namespace GameServer
 		public IGameSocketServer GameSocketServer { get; set; }
 		public KonicaGameFramework()
 		{
-			var board = new Board();
-			GameEngine = new KonicaGameEngine(board);
+		
 		}
 
 		public void Start()
 		{
 			log.Info("Starting Konica Game Framework");
-			if ( GameEngine == null || GameSocketServer == null )
+			if (  GameSocketServer == null )
 			{
-				string err = " Must set GameEngine and GameSocketServer";
+				string err = " Must set GameSocketServer";
 				log.Error(err);
 				throw new Exception(err);
 
 			}
 
-			GameEngine.Reset();  // re init game before opening connection
+			
 			GameSocketServer.Start();
 		}
 

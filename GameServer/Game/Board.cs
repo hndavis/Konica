@@ -9,32 +9,34 @@ namespace GameServer.Game
 
 	// this is used to track the uses of points in the game
 	// might be overly complex -- but allows for future
-	public class Board
+	public class Board : IBoard
 	{
-		BoardNode current;
-		List<BoardNode> ends;// = new List<BoardNode>();
+		public IBoardNode Current { get; set; }
+		public List<IBoardNode> Ends { get; set; }// = new List<BoardNode>();
 		BoardNode[,] board; //= new BoardNode[4, 4];
 		
 
-		public BoardNode this[int x, int y]
+		public IBoardNode this[int x, int y]
 		{
 			get { return board[x, y]; }
+			
 			
 		}
 
 		public void Initialize()
 		{
-			ends = new List<BoardNode>();
+			Ends = new List<IBoardNode>();
 			board = new BoardNode[4, 4];
+		}
+		public class BoardNode : IBoardNode
+		{
+			public bool IsUsed { get; set; }
+			public bool SetUsed { get; set; }
+			public IBoardNode Prev { get; set; }
 		}
 	}
 
-	public class BoardNode
-	{
-		public bool IsUsed { get; set; }
-		public bool	SetUsed { get; set; }
-		BoardNode Prev;
-	}
+	
 
 	public class LineItem
 	{

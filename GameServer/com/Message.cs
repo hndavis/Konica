@@ -40,9 +40,46 @@ namespace GameServer.com
 
 	public class Payload
 	{
+		const string init = "INITIALIZE";
+		const string node_clicked = "NODE_CLICKED";
+		const string error = "ERROR";
 		public int id { get; set; }
-		public string  msg { get; set; }
+		public string msg { get; set; }
 		public string body { get; set; }
 
+		public Point Point { get;set;}
+		public Payload()
+		{
+
+		}
+
+		public Payload(dynamic d)
+		{
+			id = d.id;
+			if ( d.msg == init)
+			{
+				msg = init;
+					
+			}
+			else if ( d.msg == node_clicked)
+			{
+				msg = node_clicked;
+				Point p = new Point();
+				p.X = d.body.x;
+				p.Y = d.body.Y;
+				this.Point = p;
+			}
+
+
+		}
+
+
+		public override string ToString()
+		{   
+			if ( this.Point == null)
+				return $"Object Payload: id:{id} msg:{msg} body:{body}";
+			else
+				return $"Object Payload: id:{id} msg:{msg} body:point(x,y) {Point.X}, {Point.Y}";
+		}
 	}
 }
