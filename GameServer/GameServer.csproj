@@ -72,6 +72,7 @@
     <Compile Include="Game\KonicaGameEngine.cs" />
     <Compile Include="com\GameSocketServer.cs" />
     <Compile Include="Game\IGameEngine.cs" />
+    <Compile Include="Game\Geometry.cs" />
     <Compile Include="IResponseProcessor.cs" />
     <Compile Include="KonicaGameFramework.cs" />
     <Compile Include="com\Message.cs" />
@@ -89,6 +90,7 @@
     <Content Include="client\init.js" />
     <Content Include="client\style.css" />
     <Content Include="client\ui.js" />
+    <Content Include="ReadMe.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

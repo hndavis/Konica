@@ -16,11 +16,16 @@ namespace GameServer.Game
 		IBoardNode Current { get; set; }
 		List<Point> Ends { get; set; }
 
+		Point StartPoint { get; set; }
+
+		List<Line> Lines { get; set; }
+		Line LastLine { get; set; }
+		int Dimension { get; }
 	}
 	public interface IBoardNode
 	{
-		bool IsUsed { get; set; }
+		bool IsUsed { get; }
 		bool SetUsed { get; set; }
-		IBoardNode Prev { get; set; }
+		
 	}
 }

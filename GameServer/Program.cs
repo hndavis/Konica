@@ -15,9 +15,9 @@ namespace GameServer
 		{
 			var containerBuilder = new ContainerBuilder();
 
-			containerBuilder.RegisterType<ResponseProcessor>().As<IResponseProcessor>();
-			containerBuilder.RegisterType<Board>().As<IBoard>();
-			containerBuilder.RegisterType<KonicaGameEngine>().As<IGameEngine>();
+			containerBuilder.RegisterType<ResponseProcessor>().As<IResponseProcessor>().SingleInstance();
+			containerBuilder.RegisterType<Board>().As<IBoard>().SingleInstance();
+			containerBuilder.RegisterType<KonicaGameEngine>().As<IGameEngine>().SingleInstance();
 			var container = containerBuilder.Build();
 			
 

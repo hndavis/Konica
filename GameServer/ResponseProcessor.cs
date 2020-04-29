@@ -27,7 +27,8 @@ namespace GameServer
 			log.Debug($"inMsg {inMsg}");
 			Payload outMsg = GameEngine.ProcessMsgRequest(inMsg);
 			log.Debug($"outMsg {outMsg}");
-			var  outJsonString = JsonConvert.SerializeObject(d);
+			var  outJsonString = JsonConvert.SerializeObject(outMsg);
+			log.Debug($"raw outmsg:{outJsonString}");
 			return outJsonString;
 		}
 
